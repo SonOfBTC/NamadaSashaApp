@@ -48,5 +48,5 @@ Feel free to contribute to the development of this application by opening issues
 
 License
 This project is licensed under the MIT License.
-![alt text]([http://url/to/img.png](https://raw.githubusercontent.com/SonOfBTC/NamadaSashaApp/main/1.jpeg)https://raw.githubusercontent.com/SonOfBTC/NamadaSashaApp/main/1.jpeg)
+
 
