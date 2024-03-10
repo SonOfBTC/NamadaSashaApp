@@ -49,3 +49,4 @@ Feel free to contribute to the development of this application by opening issues
 License
 This project is licensed under the MIT License.
 
+https://raw.githubusercontent.com/SonOfBTC/NamadaSashaApp/main/1.jpeg
