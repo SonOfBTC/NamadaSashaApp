@@ -20,6 +20,7 @@ This is an open-source web application that interacts with the Namada blockchain
    git clone https://github.com/SonOfBTC/NamadaSashaApp.git
    cd NamadaSashaApp
    npm install
+   .
    
 ## Requirements
 
