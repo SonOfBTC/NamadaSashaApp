@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sasha Namada APP</title>
+    <style>
+        body {
+            background-color: yellow;
+            text-align: center;
+            padding: 50px;
+            font-family: Arial, sans-serif;
+        }
+
+        h1 {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sasha Namada APP</h1>
+    <h2>Bonded Stake Validator List</h2>
+    <h3>Current Epoch</h3>
+    <h4>Faucet</h4>
+    <h5>After submit faucet wait 10 secs then you will see transection hash.</h5>
+    
+    <form action="/submit" method="post">
+        <label for="targetAddress">Target Address:</label>
+        <input type="text" id="targetAddress" name="targetAddress" required>
+        <br>
+        <button type="submit">Submit</button>
+    </form>
+
+    <div id="output"></div>
+
+    <br>
+
+    <button id="bondedStakeButton">Get Bonded Stake Validators</button>
+
+    <div id="bondedStakeOutput"></div>
+
+    <br>
+
+    <form>
+        <label for="validatorAddress">Validator Address:</label>
+        <input type="text" id="validatorAddress" name="validatorAddress" required>
+        <br>
+        <button type="button" onclick="findValidator()">Find Validator</button>
+    </form>
+
+    <div id="validatorOutput"></div>
+  
+    <!-- Yeni form ve çıktı divi -->
+    <br>
+  
+    <form>
+        <label for="validatorStateAddress">Validator Address:</label>
+        <input type="text" id="validatorStateAddress" name="validatorStateAddress" required>
+        <br>
+        <button type="button" onclick="getValidatorState()">Get Validator State</button>
+    </form>
+
+    <div id="validatorStateOutput"></div>
+
+    <!-- Yeni form ve çıktı divi -->
+    <br>
+
+    <form>
+        <label for="balanceOwner">Balance Owner:</label>
+        <input type="text" id="balanceOwner" name="balanceOwner" required>
+        <br>
+        <button type="button" onclick="getBalance()">Get Balance</button>
+    </form>
+
+    <div id="balanceOutput"></div>
+
+    <!-- Yeni form ve çıktı divi -->
+    <br>
+
+    <form>
+        <label for="lastBlock">Show Last Block:</label>
+        <button type="button" onclick="showLastBlock()">Show Last Block</button>
+    </form>
+
+    <div id="lastBlockOutput"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        // Basit bir benzersiz kimlik oluşturma fonksiyonu
+        function generateUniqueId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        $(document).ready(function () {
+            $("form").submit(function (event) {
+                event.preventDefault();
+
+                var targetAddress = $("#targetAddress").val();
+                
+                $.post("/submit", { targetAddress: targetAddress }, function (data) {
+                    console.log(data);
+                    $("#output").html("<pre>" + data + "</pre>");
+                });
+            });
+
+            $("#bondedStakeButton").click(function () {
+                $.get("/getBondedStake", function (data) {
+                    console.log(data);
+                    $("#bondedStakeOutput").html("<pre>" + data + "</pre>");
+                });
+            });
+
+            // Yeni fonksiyon
+            window.findValidator = function () {
+                var validatorAddress = $("#validatorAddress").val();
+
+                $.get("/findValidator", { validatorAddress: validatorAddress }, function (data) {
+                    console.log(data);
+                    $("#validatorOutput").html("<pre>" + data + "</pre>");
+                });
+            };
+
+            // Yeni fonksiyon
+            window.getValidatorState = function () {
+                var validatorStateAddress = $("#validatorStateAddress").val();
+
+                $.get("/validatorState", { validatorAddress: validatorStateAddress }, function (data) {
+                    console.log(data);
+                    $("#validatorStateOutput").html("<pre>" + data + "</pre>");
+                });
+            };
+
+            // Yeni fonksiyon
+            window.getBalance = function () {
+                var balanceOwner = $("#balanceOwner").val();
+
+                $.get("/balance", { owner: balanceOwner }, function (data) {
+                    console.log(data);
+                    $("#balanceOutput").html("<pre>" + data + "</pre>");
+                });
+            };
+
+            // Yeni fonksiyon
+            window.showLastBlock = function () {
+                $.get("/lastBlock", function (data) {
+                    console.log(data);
+                    $("#lastBlockOutput").html("<pre>" + data + "</pre>");
+                });
+            };
+        });
+    </script>
+</body>
+</html>
