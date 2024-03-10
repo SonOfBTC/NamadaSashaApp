@@ -42,5 +42,9 @@ jQuery
    run this command to allow your terminal run this app with port 3000 "sudo ufw allow 3000"
    Open your browser and go to http://localhost:3000 or if you are running your teminal locally use its local ip like http://192.168.1.106:3000/
 
-   
+   Contributing
+Feel free to contribute to the development of this application by opening issues or submitting pull requests.
+
+License
+This project is licensed under the MIT License.
 
