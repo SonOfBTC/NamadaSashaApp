@@ -2,7 +2,7 @@ Hello im Sasha.
 This application has been prepared by me for the purpose of interacting with Namada Blockchain.
 # Sasha Namada APP
 
-This is an open-source web application that interacts with the Namadac blockchain. It provides various features such as Faucet, retrieving bonded stake validators, finding a validator, getting validator state, checking balance, and showing the last block.
+This is an open-source web application that interacts with the Namada blockchain. It provides various features such as Faucet, retrieving bonded stake validators, finding a validator, getting validator state, checking balance, and showing the last block.
 
 ## Features
 
