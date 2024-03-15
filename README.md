@@ -13,13 +13,16 @@ This is an open-source web application that interacts with the Namada blockchain
 - Check the balance of a wallet address.
 - Show information about the last block.
 - (New feature) Namada's First ever P2E game added. -SNAKE-
+  
 ## Getting Started
 
 1. Clone the repository:
 
-   git clone https://github.com/SonOfBTC/NamadaSashaApp.git
-   cd NamadaSashaApp
-   npm install
+  - git clone https://github.com/SonOfBTC/NamadaSashaApp.git
+   
+  - cd NamadaSashaApp
+   
+  - npm install
    .
    
 ## Requirements
@@ -36,8 +39,10 @@ Body-parser
 Child_process
 jQuery
 
-   Once your Namadac full node is up and running, configure the application to connect to your node. Open the `index.js` change YourWalletAllias with your own wallet adress and change --memo yourpublickey
-   const command = `namadac transfer --source YourWalletAllias --target ${targetAddress} --token naan --amount 0.00001 --memo Yourpublickey --node http://namadasasharpc.xyz/`;
+   Once your Namadac full node is up and running, configure the application to connect to your node. 
+   1. Open the `index.js` change YourWalletAllias with your own wallet adress and change --memo yourpublickey
+command = `namadac transfer --source YourWalletAllias --target ${targetAddress} --token naan --amount 0.00001 --memo Yourpublickey --node http://namadasasharpc.xyz/`;
+   2. go /public/index2.html  change that= const serverURL = 'yourservesurl';
 
    run this command in the project directory "node index.js"
    run this command to allow your terminal run this app with port 3000 "sudo ufw allow 3000"
