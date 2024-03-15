@@ -20,6 +20,7 @@
 <body>
     <h1>Sasha Namada APP</h1>
     <h2>Bonded Stake Validator List</h2>
+    <h2>Namada P2E Snake Game</h2>
     <h3>Current Epoch</h3>
     <h4>Faucet</h4>
     <h5>After submit faucet wait 10 secs then you will see transection hash.</h5>
@@ -33,6 +34,24 @@
 
     <div id="output"></div>
 
+    <br>
+
+<!-- Yeni buton -->
+<button id="snakeButton">Play P2E Snake Game</button>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Yeni butonun tıklama olayını yakalama
+        $("#snakeButton").click(function () {
+            // Yönlendirme işlemi
+            window.location.href = "http://namadasasharpc.xyz/snake";
+        });
+    });
+
+</script>
+
+<br>
     <br>
 
     <button id="bondedStakeButton">Get Bonded Stake Validators</button>
