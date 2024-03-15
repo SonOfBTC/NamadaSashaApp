@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Namada Snake P2E Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        #game-board {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            border: 1px solid #ccc;
+            overflow: hidden;
+        }
+
+        .snake {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #00f;
+        }
+
+        .food {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #f00;
+        }
+
+        #score {
+            text-align: center;
+            font-size: 18px;
+        }
+
+        #game-over {
+            display: none;
+            text-align: center;
+            font-size: 24px;
+            color: #f00;
+        }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Namada P2E Snake Game</h1>
+        <div id="score">Score: 0</div>
+        <div id="game-over">Game Over! Score: <span id="final-score">0</span></div>
+        <!-- Form for entering user information -->
+        <form id="user-info-form">
+            <label for="wallet">Wallet:</label>
+            <input type="text" id="wallet" name="wallet" required>
+            <input type="hidden" id="playerScore" name="playerScore">
+            <button type="submit">Submit Score</button>
+        </form>
+    </header>
+    
+    <div id="game-board"></div>
+    <button onclick="resetGame()">Start/Reset Game</button>
+
+    <!-- Add Hammer.js -->
+    <script src="https://hammerjs.github.io/dist/hammer.js"></script>
+
+    <script>
+        const gameBoard = document.getElementById("game-board");
+        const scoreElement = document.getElementById("score");
+        const gameOverElement = document.getElementById("game-over");
+        const finalScoreElement = document.getElementById("final-score");
+        const walletInput = document.getElementById("wallet");
+        const playerScoreInput = document.getElementById("playerScore");
+        const gridSize = 30;
+        const cellSize = gameBoard.clientWidth / gridSize;
+
+        let snake = [{ x: 15, y: 15 }];
+        let food = generateFood();
+        let score = 0;
+        let direction = "right";
+
+        let gameInterval;
+
+        function draw() {
+            gameBoard.innerHTML = "";
+            snake.forEach(segment => {
+                const snakeSegment = document.createElement("div");
+                snakeSegment.className = "snake";
+                snakeSegment.style.left = segment.x * cellSize + "px";
+                snakeSegment.style.top = segment.y * cellSize + "px";
+                gameBoard.appendChild(snakeSegment);
+            });
+
+            const foodElement = document.createElement("div");
+            foodElement.className = "food";
+            foodElement.style.left = food.x * cellSize + "px";
+            foodElement.style.top = food.y * cellSize + "px";
+            gameBoard.appendChild(foodElement);
+        }
+
+        function update() {
+            const head = Object.assign({}, snake[0]);
+            switch (direction) {
+                case "up":
+                    head.y -= 1;
+                    break;
+                case "down":
+                    head.y += 1;
+                    break;
+                case "left":
+                    head.x -= 1;
+                    break;
+                case "right":
+                    head.x += 1;
+                    break;
+            }
+
+            if (head.x < 0 || head.x >= gridSize || head.y < 0 || head.y >= gridSize) {
+                endGame();
+                return;
+            }
+
+            snake.unshift(head);
+
+            if (head.x === food.x && head.y === food.y) {
+                food = generateFood();
+                score += 0.1;
+                updateScore();
+            } else {
+                snake.pop();
+            }
+
+            if (collision()) {
+                endGame();
+            }
+
+            draw();
+        }
+
+        function generateFood() {
+            return {
+                x: Math.floor(Math.random() * gridSize),
+                y: Math.floor(Math.random() * gridSize)
+            };
+        }
+
+        function collision() {
+            for (let i = 1; i < snake.length; i++) {
+                if (snake[i].x === snake[0].x && snake[i].y === snake[0].y) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function updateScore() {
+            scoreElement.textContent = "Score: " + score;
+        }
+
+        function endGame() {
+            gameOverElement.style.display = "block";
+            finalScoreElement.textContent = score;
+            playerScoreInput.value = score; // Put the score into the form element
+            clearInterval(gameInterval);
+        }
+
+        function resetGame() {
+            snake = [{ x: 15, y: 15 }];
+            food = generateFood();
+            score = 0;
+            updateScore();
+            gameOverElement.style.display = "none";
+            direction = "right";
+            gameInterval = setInterval(update, 100);
+        }
+
+        document.addEventListener("keydown", (event) => {
+            switch (event.key) {
+                case "ArrowUp":
+                    direction = "up";
+                    break;
+                case "ArrowDown":
+                    direction = "down";
+                    break;
+                case "ArrowLeft":
+                    direction = "left";
+                    break;
+                case "ArrowRight":
+                    direction = "right";
+                    break;
+            }
+        });
+
+        // Listen for touch events with Hammer.js
+        const hammer = new Hammer(gameBoard);
+        hammer.get('swipe').set({ direction: Hammer.DIRECTION_ALL });
+        hammer.on("swipe", function (event) {
+            switch (event.direction) {
+                case Hammer.DIRECTION_UP:
+                    direction = "up";
+                    break;
+                case Hammer.DIRECTION_DOWN:
+                    direction = "down";
+                    break;
+                case Hammer.DIRECTION_LEFT:
+                    direction = "left";
+                    break;
+                case Hammer.DIRECTION_RIGHT:
+                    direction = "right";
+                    break;
+            }
+        });
+
+        // Function triggered when the form is submitted
+        document.getElementById("user-info-form").addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            // Get form data
+            const wallet = walletInput.value;
+            const playerScore = playerScoreInput.value;
+
+            // Send score and player information to the server
+            sendScoreToServer(wallet, playerScore);
+        });
+
+// Function to send score and player information to the server
+function sendScoreToServer(wallet, playerScore) {
+    // Update the server URL
+    const serverURL = 'http://namadasasharpc.xyz/submit-score';
+
+    fetch(serverURL, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ wallet: wallet, playerScore: playerScore }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log(data);
+        // Reset the game after submitting the score
+        resetGame();
+    })
+    .catch(error => console.error('Error sending score:', error));
+}
+
+    </script>
+</body>
+</html>
