@@ -51,7 +51,7 @@ command = `namadac transfer --source YourWalletAllias --target ${targetAddress} 
    Contributing
 Feel free to contribute to the development of this application by opening issues or submitting pull requests.
 
-Live url http://namadasasharpc.xyz/app
+Live url https://namadasasharpc.xyz/app
 
 License
 This project is licensed under the MIT License.
